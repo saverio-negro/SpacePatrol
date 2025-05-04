@@ -12,6 +12,15 @@ struct SpacePatrolApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .frame(minWidth: 200, maxWidth: 600,
+                       minHeight: 100, maxHeight: 200
+                )
+                .glassBackgroundEffect()
+        }
+        .windowStyle(.plain)
+        
+        ImmersiveSpace(id: "ImmersiveSpace") {
+            ImmersiveView()
         }
     }
 }
