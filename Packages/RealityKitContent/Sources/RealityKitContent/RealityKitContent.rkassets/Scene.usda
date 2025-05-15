@@ -29,6 +29,12 @@ def Xform "Root"
                 uniform asset file = @robot_waving.usdz@
                 uniform string name = "robot_waving"
             }
+
+            def RealityKitAnimationFile "robot_victory"
+            {
+                uniform asset file = @robot_victory.usdz@
+                uniform string name = "robot_victory"
+            }
         }
     }
 }

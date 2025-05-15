@@ -9,11 +9,14 @@ import SwiftUI
 
 @main
 struct SpacePatrolApp: App {
+    
+    @StateObject var viewModel = ViewModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .frame(minWidth: 200, maxWidth: 600,
-                       minHeight: 100, maxHeight: 200
+                       minHeight: 80, maxHeight: 160
                 )
                 .glassBackgroundEffect()
         }
@@ -21,6 +24,7 @@ struct SpacePatrolApp: App {
         
         ImmersiveSpace(id: "ImmersiveSpace") {
             ImmersiveView()
+                .environmentObject(viewModel)
         }
     }
 }
