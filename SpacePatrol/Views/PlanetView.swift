@@ -10,6 +10,9 @@ import RealityKit
 import RealityKitContent
 
 struct PlanetView: View {
+    
+    @EnvironmentObject var viewModel: ViewModel
+    
     var body: some View {
         EmptyView()
     }

@@ -10,7 +10,18 @@ import RealityKit
 import RealityKitContent
 
 struct PlanetSelectionView: View {
+    
+    @EnvironmentObject var viewModel: ViewModel
+    
     var body: some View {
         EmptyView()
+    }
+    
+    func generateSkyBox() -> ModelEntity {
+        let sphere = ModelEntity(
+            mesh: .generateSphere(radius: 2000)
+        )
+        
+        let imageTexture = 
     }
 }

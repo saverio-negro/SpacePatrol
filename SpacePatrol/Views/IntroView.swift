@@ -15,15 +15,20 @@ struct IntroView: View {
     @EnvironmentObject var viewModel: ViewModel
     
     @State private var robot = Entity()
+    @State private var mars = Entity()
     @State private var inputText = "This is a test"
     @State private var showTextField = false
     @State private var showButtons = false
+    
+    // Publishers and Subscribers
     @State private var userSelectionPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
-    @State private var subscriber: Cancellable?
+    @State private var rotateMarsPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
+    @State private var userSelectionSubscriber: Cancellable?
+    @State private var rotateMarsSubscriber: Cancellable?
     
     @State private var assistantEntity = {
         let anchorEntity = AnchorEntity(.head)
-        anchorEntity.position = SIMD3<Float>(0.6, -0.2, -1.0)
+        anchorEntity.position = SIMD3<Float>(0.6, -0.3, -1.0)
         let radians = -30 * Float.pi / 180
         anchorEntity.transform.rotation = simd_quatf(angle: radians, axis: [0, 1, 0])
         return anchorEntity
@@ -42,15 +47,17 @@ struct IntroView: View {
                 Button {
                     userSelectionPublisher.send()
                 } label: {
-                    Text("Yes!")
-                        .font(.largeTitle)
+                    Text("Yes")
+                        .font(.extraLargeTitle2)
+                        .padding()
                 }
                 
                 Button {
                     
                 } label: {
-                    Text("No!")
-                        .font(.largeTitle)
+                    Text("No")
+                        .font(.extraLargeTitle2)
+                        .padding()
                 }
             }
             .opacity(showButtons ? 1 : 0)
@@ -93,13 +100,18 @@ struct IntroView: View {
                     await playIntroSequence()
                 }
             case .excited:
-                break
+                Task {
+                    await playVictoryAnimation()
+                }
             }
         }
-    }
-    
-    private func getNanosecondsFromSeconds(seconds: Double) -> UInt64 {
-        return UInt64(seconds * pow(10, 9))
+        .task {
+            rotateMarsSubscriber = rotateMarsPublisher.sink { _ in
+                Task {
+                    await mars.rotate(radiansPerSecond: 0.1, axis: .y)
+                }
+            }
+        }
     }
     
     private func animateText(text: String) async {
@@ -108,8 +120,8 @@ struct IntroView: View {
         let letters = text.split(separator: "")
         
         for letter in letters {
-            let time1 = getNanosecondsFromSeconds(seconds: 0.1)
-            let time2 = getNanosecondsFromSeconds(seconds: 0.3)
+            let time1 = Time.getNanosecondsFromSeconds(seconds: 0.05)
+            let time2 = Time.getNanosecondsFromSeconds(seconds: 0.09)
             let randomDeltaTime = UInt64.random(in: time1...time2)
             try! await Task.sleep(nanoseconds: randomDeltaTime)
             
@@ -124,19 +136,33 @@ struct IntroView: View {
             showTextField = true
             
             let idleAnimation = robot.availableAnimations[0]
-            let victoryAnimation = robot.availableAnimations[2]
-            guard let victoryIdleAnimationSequence = try? AnimationResource.sequence(with: [victoryAnimation, idleAnimation.repeat()])
+            let waveAnimation = robot.availableAnimations[1]
+            guard
+                let waveIdleAnimationSequence = try? AnimationResource.sequence(with: [waveAnimation, idleAnimation.repeat()])
             else {
                 return
             }
             
-            robot.playAnimation(victoryIdleAnimationSequence)
+            robot.playAnimation(waveIdleAnimationSequence)
         }
+    }
+    
+    private func playVictoryAnimation() async {
+        let idleAnimation = robot.availableAnimations[0]
+        let victoryAnimation = robot.availableAnimations[2]
+        
+        guard
+            let victoryIdleAnimationSequence = try? AnimationResource.sequence(with: [victoryAnimation, idleAnimation.repeat()])
+        else {
+            return
+        }
+        
+        robot.playAnimation(victoryIdleAnimationSequence)
     }
     
     func awaitUserSelection() async {
         await withCheckedContinuation { (continutation: CheckedContinuation<Void, Never>) in
-            subscriber = userSelectionPublisher.sink(receiveValue: { _ in
+            userSelectionSubscriber = userSelectionPublisher.sink(receiveValue: { _ in
                 continutation.resume()
             })
         }
@@ -156,10 +182,15 @@ struct IntroView: View {
         _ = await(showTextAndWaveAnimation, animateText)
         
         showButtons = true
-        
         await awaitUserSelection()
+        showButtons = false
         
+        viewModel.assistantState = .excited
         await self.animateText(text: texts[1])
+        
+        withAnimation(Animation.easeInOut(duration: 2)) {
+            viewModel.appFlowState = .planetSelection
+        }
     }
     
     private func generateIntroView(content: RealityViewContent, attachments: RealityViewAttachments) async {
@@ -172,25 +203,26 @@ struct IntroView: View {
         robot.transform.scale = [0.0025, 0.0025, 0.0025]
         robot.generateCollisionShapes(recursive: true)
         robot.components.set(InputTargetComponent())
-        let idleAnimation = robot.availableAnimations[0]
-        let waveAnimation = robot.availableAnimations[1]
         
-        // Get SwiftUI attachmentsv
+        // Load in mars and rotate it
+        guard let mars = robot.findEntity(named: "Mars") else { return }
+        mars.components.remove(InputTargetComponent.self)
+        mars.components.remove(CollisionComponent.self)
+        self.mars = mars
+        rotateMarsPublisher.send()
+        
+        
+        let idleAnimation = robot.availableAnimations[0]
+        
+        // Get SwiftUI attachments
         guard
             let attachmentEntity = attachments.entity(for: "attachment")
         else {
             fatalError("Failed to create attachment entity.")
         }
-        attachmentEntity.position = SIMD3<Float>(0, 0.55, 0)
+        attachmentEntity.position = SIMD3<Float>(0, 0.60, 0)
         let radians = 30 * Float.pi / 180
         attachmentEntity.transform.rotation = simd_quatf(angle: radians, axis: [0, 1, 0])
-        
-        // Create sequence animation
-        guard
-            let waveIdleAnimationSequence = try? AnimationResource.sequence(with: [waveAnimation, idleAnimation.repeat()])
-        else {
-            return
-        }
         
         assistantEntity.addChild(attachmentEntity)
         assistantEntity.addChild(robot)

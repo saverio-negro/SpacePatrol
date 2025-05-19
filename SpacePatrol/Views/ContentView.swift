@@ -18,6 +18,8 @@ struct ContentView: View {
         VStack {
             Text("Welcome to Space Patrol!")
                 .font(.extraLargeTitle2)
+            Text("Hint: Tap onto the robot assistant.")
+                .font(.largeTitle)
         }
         .padding()
         .task {

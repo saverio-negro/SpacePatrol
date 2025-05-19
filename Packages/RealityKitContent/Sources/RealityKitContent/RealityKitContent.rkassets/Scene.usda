@@ -7,16 +7,17 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["GridMaterial", "Sphere"]
+    reorder nameChildren = ["robot_idle", "Ruined_Mars"]
     rel material:binding = None (
         bindMaterialAs = "weakerThanDescendants"
     )
 
     def "robot_idle" (
         active = true
-        prepend references = @robot_idle.usdz@
+        references = @robot_idle.usdz@
     )
     {
+        reorder nameChildren = ["Mars", "Materials", "temp", "mixamorig_Hips", "AnimationLibrary"]
         float3 xformOp:scale = (0.01, 0.01, 0.01)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
@@ -34,6 +35,110 @@ def Xform "Root"
             {
                 uniform asset file = @robot_victory.usdz@
                 uniform string name = "robot_victory"
+            }
+        }
+
+        def "Mars" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            references = @Mars.usdz@
+        )
+        {
+            rel material:binding = </Root/Ruined_Mars> (
+                bindMaterialAs = "weakerThanDescendants"
+            )
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (2000, 2000, 2000)
+            float3 xformOp:translate = (0, -200, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "geom" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                rel material:binding = </Root/robot_idle/Mars/geom/realistic/materials/usdpreviewsurface4sg> (
+                    bindMaterialAs = "weakerThanDescendants"
+                )
+
+                over "realistic"
+                {
+                    over "materials"
+                    {
+                        over "usdpreviewsurface4sg"
+                        {
+                            string inputs:mars_realistic_ao_1:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (315, 816)
+                                    }
+                                }
+                            )
+                            string inputs:mars_realistic_bc:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (602, 816)
+                                    }
+                                }
+                            )
+                            string inputs:mars_realistic_n:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (889, 816)
+                                    }
+                                }
+                            )
+                            string inputs:mars_realistic_r_1:varname (
+                                customData = {
+                                    dictionary realitykit = {
+                                        float2 positionInSubgraph = (1176, 816)
+                                    }
+                                }
+                            )
+                            token outputs:realitykit:vertex
+                            float2 ui:nodegraph:realitykit:subgraphOutputs:pos = (1402.75, 260.75)
+
+                            over "mars_realistic_r_1_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (350, 628)
+                            }
+
+                            over "mars_realistic_ao_1_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (884, 100.5)
+                            }
+
+                            over "mars_realistic_n_mtlx_scale"
+                            {
+                                float2 ui:nodegraph:node:pos = (618.5, 279)
+                            }
+
+                            over "mars_realistic_n_mtlx_offset"
+                            {
+                                float2 ui:nodegraph:node:pos = (884, 279)
+                            }
+
+                            over "mars_realistic_n_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (350, 287)
+                            }
+
+                            over "mars_realistic_bc_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (618.5, 457.5)
+                            }
+
+                            over "Lookup_st"
+                            {
+                                float2 ui:nodegraph:node:pos = (91, 317)
+                            }
+
+                            over "mars_realistic_mat_mtlx"
+                            {
+                                float2 ui:nodegraph:node:pos = (1151.75, 260.75)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
