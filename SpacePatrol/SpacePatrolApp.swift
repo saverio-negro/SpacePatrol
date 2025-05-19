@@ -23,8 +23,15 @@ struct SpacePatrolApp: App {
         .windowStyle(.plain)
         
         ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView()
-                .environmentObject(viewModel)
+            switch viewModel.appFlowState {
+            case .intro:
+                IntroView()
+                    .environmentObject(viewModel)
+            case .planetSelection:
+                PlanetSelectionView()
+            case .onPlanet:
+                PlanetView()
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ImmersiveView.swift
+//  IntroView.swift
 //  SpacePatrol
 //
 //  Created by Saverio Negro on 04/05/25.
@@ -8,14 +8,18 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import Combine
 
-struct ImmersiveView: View {
+struct IntroView: View {
     
     @EnvironmentObject var viewModel: ViewModel
     
     @State private var robot = Entity()
     @State private var inputText = "This is a test"
     @State private var showTextField = false
+    @State private var showButtons = false
+    @State private var userSelectionPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
+    @State private var subscriber: Cancellable?
     
     @State private var assistantEntity = {
         let anchorEntity = AnchorEntity(.head)
@@ -33,6 +37,28 @@ struct ImmersiveView: View {
                 .fontWeight(.regular)
                 .padding(40)
                 .glassBackgroundEffect()
+            
+            HStack(spacing: 20) {
+                Button {
+                    userSelectionPublisher.send()
+                } label: {
+                    Text("Yes!")
+                        .font(.largeTitle)
+                }
+                
+                Button {
+                    
+                } label: {
+                    Text("No!")
+                        .font(.largeTitle)
+                }
+            }
+            .opacity(showButtons ? 1 : 0)
+            .animation(
+                Animation.easeInOut,
+                value: showButtons
+            )
+            
         }
         .opacity(showTextField ? 1 : 0)
         .animation(
@@ -108,17 +134,32 @@ struct ImmersiveView: View {
         }
     }
     
+    func awaitUserSelection() async {
+        await withCheckedContinuation { (continutation: CheckedContinuation<Void, Never>) in
+            subscriber = userSelectionPublisher.sink(receiveValue: { _ in
+                continutation.resume()
+            })
+        }
+    }
+    
     private func playIntroSequence() async {
         
         // Robot assistant texts
         let texts = [
             "Hello! Are you ready for an exciting adventure in space?",
+            "Hurray! Select a planet to travel to!"
         ]
         
         async let showTextAndWaveAnimation: Void = showTextAndWaveAnimation()
         async let animateText: Void = animateText(text: texts[0])
         
         _ = await(showTextAndWaveAnimation, animateText)
+        
+        showButtons = true
+        
+        await awaitUserSelection()
+        
+        await self.animateText(text: texts[1])
     }
     
     private func generateIntroView(content: RealityViewContent, attachments: RealityViewAttachments) async {
