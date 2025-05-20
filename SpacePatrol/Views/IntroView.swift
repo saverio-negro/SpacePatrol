@@ -188,8 +188,8 @@ struct IntroView: View {
         viewModel.assistantState = .excited
         await self.animateText(text: texts[1])
         
-        withAnimation(Animation.easeInOut(duration: 2)) {
-            viewModel.appFlowState = .planetSelection
+        withAnimation(Animation.easeInOut(duration: 1)) {
+            viewModel.appFlowState = .planetTravel
         }
     }
     

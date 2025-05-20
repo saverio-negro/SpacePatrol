@@ -11,15 +11,48 @@ import RealityKitContent
 
 struct ContentView: View {
     
+    @EnvironmentObject var viewModel: ViewModel
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
     
-    var body: some View {
+    var introViewText: some View {
         VStack {
             Text("Welcome to Space Patrol!")
                 .font(.extraLargeTitle2)
+                .padding()
             Text("Hint: Tap onto the robot assistant.")
-                .font(.largeTitle)
+                .font(.title)
+                .padding()
+        }
+    }
+    
+    var planetSelectionViewText: some View {
+        VStack {
+            Text("Try to reach Mars!")
+                .font(.extraLargeTitle2)
+                .padding()
+            Text("Hint: Grip the control wheel and pull it back.")
+                .font(.title)
+                .padding()
+        }
+    }
+    
+    var planetViewText: some View {
+        VStack {
+            
+        }
+    }
+    
+    var body: some View {
+        Group {
+            switch viewModel.appFlowState {
+            case .intro:
+                introViewText
+            case .planetTravel:
+                planetSelectionViewText
+            case .onPlanet:
+                planetViewText
+            }
         }
         .padding()
         .task {

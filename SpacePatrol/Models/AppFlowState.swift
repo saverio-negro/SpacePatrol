@@ -8,6 +8,6 @@
 // Enum representing the various states the app can be in
 enum AppFlowState {
     case intro
-    case planetSelection
+    case planetTravel
     case onPlanet
 }

@@ -17,6 +17,7 @@ struct SpacePatrolApp: App {
         
         WindowGroup {
             ContentView()
+                .environmentObject(viewModel)
                 .frame(minWidth: 200, maxWidth: 600,
                        minHeight: 80, maxHeight: 160
                 )
@@ -29,8 +30,8 @@ struct SpacePatrolApp: App {
             case .intro:
                 IntroView()
                     .environmentObject(viewModel)
-            case .planetSelection:
-                PlanetSelectionView()
+            case .planetTravel:
+                PlanetTravelView()
                     .environmentObject(viewModel)
             case .onPlanet:
                 PlanetView()
@@ -43,7 +44,7 @@ struct SpacePatrolApp: App {
                 
             case .intro:
                 immersionStyle = .mixed
-            case .planetSelection:
+            case .planetTravel:
                 immersionStyle = .progressive
             case .onPlanet:
                 immersionStyle = .full
