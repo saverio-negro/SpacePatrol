@@ -9,7 +9,7 @@ import SwiftUI
 import RealityKit
 
 extension ModelEntity {
-    func createFingerTip() -> ModelEntity {
+    static func createFingerTip() -> ModelEntity {
         let fingerTipEntity = ModelEntity(
             mesh: .generateSphere(radius: 0.01),
             materials: [UnlitMaterial(color: .gray)],
