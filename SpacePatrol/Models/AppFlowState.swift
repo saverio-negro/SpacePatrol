@@ -9,5 +9,6 @@
 enum AppFlowState {
     case intro
     case planetTravel
+    case onSpaceship
     case onPlanet
 }

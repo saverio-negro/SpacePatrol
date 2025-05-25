@@ -113,7 +113,11 @@ struct IntroView: View {
             }
         }
     }
-    
+}
+
+// MARK: - Utility Methods
+
+extension IntroView {
     private func animateText(text: String) async {
         inputText = ""
         
@@ -189,10 +193,15 @@ struct IntroView: View {
         await self.animateText(text: texts[1])
         
         withAnimation(Animation.easeInOut(duration: 1)) {
-            viewModel.appFlowState = .planetTravel
+            viewModel.appFlowState = .onSpaceship
         }
     }
-    
+}
+
+
+// MARK: - RealityContentView and RealityViewAttachments Setup
+
+extension IntroView {
     private func generateIntroView(content: RealityViewContent, attachments: RealityViewAttachments) async {
         
         guard let scene = try? await Entity(named: "Scene", in: realityKitContentBundle) else { return }

@@ -8,6 +8,6 @@
 import SwiftUI
 
 class ViewModel: ObservableObject {
-    @Published var appFlowState: AppFlowState = .planetTravel
+    @Published var appFlowState: AppFlowState = .onSpaceship
     @Published var assistantState: AssistantState = .idle
 }

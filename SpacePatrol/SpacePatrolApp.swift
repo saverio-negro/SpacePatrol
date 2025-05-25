@@ -22,6 +22,7 @@ struct SpacePatrolApp: App {
                        minHeight: 80, maxHeight: 160
                 )
                 .glassBackgroundEffect()
+                .opacity(viewModel.appFlowState == .onSpaceship || viewModel.appFlowState == .planetTravel ? 0 : 1)
         }
         .windowStyle(.plain)
         
@@ -29,6 +30,9 @@ struct SpacePatrolApp: App {
             switch viewModel.appFlowState {
             case .intro:
                 IntroView()
+                    .environmentObject(viewModel)
+            case .onSpaceship:
+                SpaceshipView()
                     .environmentObject(viewModel)
             case .planetTravel:
                 PlanetTravelView()
@@ -41,11 +45,12 @@ struct SpacePatrolApp: App {
         .immersionStyle(selection: $immersionStyle, in: .mixed, .progressive, .full)
         .onChange(of: viewModel.appFlowState) { _, newValue in
             switch newValue {
-                
             case .intro:
                 immersionStyle = .mixed
-            case .planetTravel:
+            case .onSpaceship:
                 immersionStyle = .progressive
+            case .planetTravel:
+                immersionStyle = .full
             case .onPlanet:
                 immersionStyle = .full
             }

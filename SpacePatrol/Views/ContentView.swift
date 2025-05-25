@@ -26,17 +26,6 @@ struct ContentView: View {
         }
     }
     
-    var planetSelectionViewText: some View {
-        VStack {
-            Text("Try to reach Mars!")
-                .font(.extraLargeTitle2)
-                .padding()
-            Text("Hint: Grip the control wheel and pull it back.")
-                .font(.title)
-                .padding()
-        }
-    }
-    
     var planetViewText: some View {
         VStack {
             
@@ -48,8 +37,10 @@ struct ContentView: View {
             switch viewModel.appFlowState {
             case .intro:
                 introViewText
+            case .onSpaceship:
+                EmptyView()
             case .planetTravel:
-                planetSelectionViewText
+                EmptyView()
             case .onPlanet:
                 planetViewText
             }
