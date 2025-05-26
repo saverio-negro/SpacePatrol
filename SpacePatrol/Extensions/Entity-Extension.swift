@@ -33,9 +33,10 @@ extension Entity {
         let timeInterval: TimeInterval = 0.05
         let radiansPerTimeInterval = radiansPerSecond * Float(timeInterval)
         
-        await Time.scheduleTimer(timeInterval: timeInterval) {
+        await Time.scheduledTimer(timeInterval: timeInterval) {
             currentRadians += radiansPerTimeInterval
             self.transform.rotation = simd_quatf(angle: currentRadians, axis: axis.axisVector)
         }
+        
     }
 }

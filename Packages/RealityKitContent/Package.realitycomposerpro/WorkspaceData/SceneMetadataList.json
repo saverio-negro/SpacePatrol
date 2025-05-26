@@ -8,6 +8,15 @@
     "objectMetadataList" : [
       [
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
+        "Root",
+        "Sphere"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root"
       ],
       {
@@ -22,15 +31,6 @@
       {
         "isExpanded" : true,
         "isLocked" : false
-      },
-      [
-        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
-        "Root",
-        "Sphere"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
       }
     ]
   },
@@ -41,14 +41,6 @@
   },
   "26DBAE76-5DD8-47B6-A085-1B4ADA111097" : {
     "objectMetadataList" : [
-      [
-        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root",
@@ -71,6 +63,14 @@
       {
         "disallowsFraming" : true,
         "isExpanded" : false,
+        "isLocked" : false
+      },
+      [
+        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
         "isLocked" : false
       }
     ]
@@ -96,7 +96,12 @@
     "objectMetadataList" : [
       [
         "778372D2-2550-4840-A066-EECE514681A0",
-        "Root"
+        "Root",
+        "Moon",
+        "geom",
+        "realistic",
+        "materials",
+        "usdpreviewsurface2sg"
       ],
       {
         "isExpanded" : true,
@@ -107,9 +112,7 @@
         "Root",
         "Moon",
         "geom",
-        "realistic",
-        "materials",
-        "usdpreviewsurface2sg"
+        "realistic"
       ],
       {
         "isExpanded" : true,
@@ -139,17 +142,6 @@
       [
         "778372D2-2550-4840-A066-EECE514681A0",
         "Root",
-        "Moon",
-        "geom",
-        "realistic"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
         "Moon"
       ],
       {
@@ -165,6 +157,14 @@
       {
         "isExpanded" : true,
         "isLocked" : false
+      },
+      [
+        "778372D2-2550-4840-A066-EECE514681A0",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       }
     ]
   },
@@ -172,7 +172,8 @@
     "objectMetadataList" : [
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
-        "Root"
+        "Root",
+        "Spaceship"
       ],
       {
         "isExpanded" : true,
@@ -180,8 +181,7 @@
       },
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
-        "Root",
-        "Spaceship"
+        "Root"
       ],
       {
         "isExpanded" : true,

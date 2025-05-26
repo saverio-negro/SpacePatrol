@@ -39,7 +39,7 @@ extension ModelEntity {
         case .onSpaceship:
             fallthrough
         case .onPlanet:
-            material = TextureResource.getTextureForSkyBox(from: "") ?? nil
+            material = TextureResource.getTextureForSkyBox(from: "Space") ?? nil
         }
         
         guard let material = material else { return nil }

@@ -13,7 +13,7 @@ enum Time {
         return UInt64(seconds * pow(10, 9))
     }
     
-    static func scheduleTimer(timeInterval: TimeInterval, action: () -> Void) async {
+    static func scheduledTimer(timeInterval: TimeInterval, action: () -> Void) async {
         
         let timeInterval = getNanosecondsFromSeconds(seconds: timeInterval)
         

@@ -10,7 +10,7 @@ import RealityKit
 
 extension TextureResource {
     static func getTextureForSkyBox(from image: String) -> UnlitMaterial? {
-        guard let textureResource = try? Self.load(named: "Space") else { return nil }
+        guard let textureResource = try? Self.load(named: image) else { return nil }
         let texture = MaterialParameters.Texture(textureResource)
         
         var material = UnlitMaterial()
