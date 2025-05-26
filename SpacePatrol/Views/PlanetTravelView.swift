@@ -8,12 +8,143 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import Combine
 
 struct PlanetTravelView: View {
-    var body: some View {
-        RealityView { content in
-            guard let skybox = ModelEntity.generateSkyBox(when: .planetTravel) else { return }
-            content.add(skybox)
+    
+    @State private var landingPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
+    @State private var landingSubsciber: Cancellable? = nil
+    
+    let headAnchor = {
+        let anchorEntity = AnchorEntity(.head)
+        anchorEntity.position = SIMD3<Float>(0, -1.2, -0.5)
+        
+        return anchorEntity
+    }()
+    
+    @State private var headAnchorAttachment = {
+        let anchorEntity = AnchorEntity(.head)
+        anchorEntity.position = SIMD3<Float>(0.01, -0.26, -0.8)
+        
+        return anchorEntity
+    }()
+    
+    @State private var skybox = ModelEntity()
+    @State private var sun = Entity()
+    @State private var spaceship = Entity()
+    @State private var inputText = ""
+    @GestureState private var isButtonHeld = false
+    
+    private var attachment: some View {
+        VStack {
+            Image(systemName: "button.programmable")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200, height: 200)
+                .foregroundStyle(isButtonHeld ? .brown : .red)
+                .padding()
+                .gesture(
+                    LongPressGesture(minimumDuration: 2, maximumDistance: 0.2)
+                        .updating($isButtonHeld, body: { value, gestureState, transaction in
+                            gestureState = value
+                        })
+                        .onEnded { _ in
+                            // Communicate to subscriber that landing action was performed
+                            landingPublisher.send()
+                        }
+                )
+            
+            RoundedRectangle(cornerRadius: 15)
+                .foregroundStyle(.black.opacity(0.9))
+                .overlay {
+                    VStack(alignment: .leading) {
+                        Text("Robot Assistant:")
+                            .font(.extraLargeTitle2)
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                        
+                        Text("\(inputText)")
+                            .font(.extraLargeTitle2)
+                            .fontWeight(.regular)
+                            .padding()
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: 250)
         }
+    }
+    
+    var body: some View {
+        RealityView { content, attachments in
+            await setupContentEntity(content: content, attachments: attachments)
+        } attachments: {
+            Attachment(id: "attachment") {
+                attachment
+            }
+        }
+        .task {
+            await initiateTravelSequence()
+        }
+    }
+}
+
+// MARK: - Utility Functions
+extension PlanetTravelView {
+
+    func awaitForLandingAction() async {
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            landingSubsciber = landingPublisher.sink { _ in
+                continuation.resume()
+            }
+        }
+    }
+
+    func initiateTravelSequence() async {
+        
+        // Show and animate robot assistant message
+        await Utility.animateText(text: "Let's speed our ride up to land on Mars sooner. Long press the red button to activate light speed.", inputText: $inputText)
+        
+        // Wait for the user to long press the red button
+        await awaitForLandingAction()
+        
+        // Show robot assistant message to report about light-speed mode
+        await Utility.animateText(text: "Light speed modality on!", inputText: $inputText)
+        
+        // Change skybox material to video material
+        
+    }
+}
+
+// MARK: - Content Setup for `PlanetTravelView`
+
+extension PlanetTravelView {
+    func setupContentEntity(content: RealityViewContent, attachments: RealityViewAttachments) async {
+        // Load in scene
+        guard let scene = try? await Entity(named: "PlanetTravel", in: realityKitContentBundle) else { return }
+        
+        // Load in initial skybox
+        guard let skybox = ModelEntity.generateSkyBox(when: .onSpaceship) else { return }
+        self.skybox = skybox
+        
+        // Load in sun
+        guard let sun = scene.findEntity(named: "Sun") else { return }
+        self.sun = sun
+        sun.generateCollisionShapes(recursive: true)
+        
+        // Load in spaceship
+        guard let spaceship = scene.findEntity(named: "Spaceship") else { return }
+        self.spaceship = spaceship
+        spaceship.transform.rotation = simd_quatf(angle: Float.pi, axis: [0, 1, 0])
+        spaceship.generateCollisionShapes(recursive: true)
+        headAnchor.addChild(spaceship)
+        
+        // Load in assistant message attachment
+        guard let message = attachments.entity(for: "attachment") else { return }
+        headAnchorAttachment.addChild(message)
+        
+        content.add(skybox)
+        content.add(sun)
+        content.add(headAnchor)
+        content.add(headAnchorAttachment)
     }
 }

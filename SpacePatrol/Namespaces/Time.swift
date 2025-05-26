@@ -13,11 +13,11 @@ enum Time {
         return UInt64(seconds * pow(10, 9))
     }
     
-    static func scheduledTimer(timeInterval: TimeInterval, action: () -> Void) async {
+    static func scheduledTimer(timeInterval: TimeInterval, condition: Bool, action: () -> Void) async {
         
         let timeInterval = getNanosecondsFromSeconds(seconds: timeInterval)
         
-        while true {
+        while condition {
             try! await Task.sleep(nanoseconds: timeInterval)
             action()
         }

@@ -9,7 +9,7 @@
       [
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root",
-        "Sphere"
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -26,7 +26,7 @@
       [
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root",
-        "GridMaterial"
+        "Sphere"
       ],
       {
         "isExpanded" : true,
@@ -44,20 +44,6 @@
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root",
-        "robot_idle",
-        "Mars",
-        "geom",
-        "realistic",
-        "materials",
-        "usdpreviewsurface4sg"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
-        "Root",
         "SkyDome"
       ],
       {
@@ -68,6 +54,20 @@
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
+        "Root",
+        "robot_idle",
+        "Mars",
+        "geom",
+        "realistic",
+        "materials",
+        "usdpreviewsurface4sg"
       ],
       {
         "isExpanded" : true,
@@ -109,57 +109,6 @@
       },
       [
         "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
-        "Moon",
-        "geom",
-        "realistic"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
-        "Sun"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
-        "Moon",
-        "geom",
-        "realistic",
-        "materials"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
-        "Moon"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
-        "Moon",
-        "geom"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "778372D2-2550-4840-A066-EECE514681A0",
         "Root"
       ],
       {
@@ -170,6 +119,16 @@
   },
   "9FDCB02F-D6C6-48C8-9500-145F27F2639C" : {
     "objectMetadataList" : [
+      [
+        "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
+        "Root",
+        "Spaceship",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
         "Root",
@@ -186,12 +145,14 @@
       {
         "isExpanded" : true,
         "isLocked" : false
-      },
+      }
+    ]
+  },
+  "CBEE2537-7B33-4178-9599-28E8E6764A43" : {
+    "objectMetadataList" : [
       [
-        "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
-        "Root",
-        "Spaceship",
-        "Materials"
+        "CBEE2537-7B33-4178-9599-28E8E6764A43",
+        "Root"
       ],
       {
         "isExpanded" : true,

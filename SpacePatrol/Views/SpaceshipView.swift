@@ -29,7 +29,7 @@ struct SpaceshipView: View {
     
     let headAnchorAttachment = {
         let anchorEntity = AnchorEntity(.head)
-        anchorEntity.position = SIMD3<Float>(0.005, -0.17, -0.8)
+        anchorEntity.position = SIMD3<Float>(0.01, -0.26, -0.8)
         
         return anchorEntity
     }()
@@ -48,19 +48,27 @@ struct SpaceshipView: View {
     @State private var moon = Entity()
     @State private var sun = Entity()
     @State private var count = ModelEntity()
-    @State private var timeRemaining: TimeInterval = 10
+    @State private var inputText = ""
+    @State private var timeRemaining: TimeInterval = 15
     
     private var attachment: some View {
-        RoundedRectangle(cornerRadius: 10)
-            .foregroundStyle(.blue)
-            .opacity(0.7)
+        RoundedRectangle(cornerRadius: 15)
+            .foregroundStyle(.black.opacity(0.9))
             .overlay {
-                Text("Preparing travel to Mars.")
-                    .font(.extraLargeTitle2)
-                    .fontWeight(.bold)
-                    .padding(20)
+                VStack(alignment: .leading) {
+                    Text("Robot Assistant:")
+                        .font(.extraLargeTitle2)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                    
+                    Text("\(inputText)")
+                        .font(.extraLargeTitle2)
+                        .fontWeight(.regular)
+                        .padding()
+                }
             }
-            .frame(width: 350, height: 150)
+            .frame(maxWidth: .infinity, maxHeight: 250)
     }
     
     var body: some View {
@@ -69,11 +77,7 @@ struct SpaceshipView: View {
         } update: { content, attachment in
             // Update content
             if timeRemaining >= 0 {
-                count.model?.mesh = .generateText(
-                    "\(timeRemaining.formatted(.number))",
-                    extrusionDepth: 0.02,
-                    font: .systemFont(ofSize: 0.1)
-                )
+                
             }
         } attachments: {
             Attachment(id: "attachment") {
@@ -83,21 +87,23 @@ struct SpaceshipView: View {
         .task {
             rotateEarthSubscriber = rotateEarthPublisher.sink { _ in
                 Task {
-                    await earth.rotate(radiansPerSecond: 0.01, axis: .y)
+                    await earth.rotate(radiansPerSecond: 0.01, axis: .y, while: viewModel.appFlowState == .onSpaceship)
                 }
             }
         }
         .task {
             rotateMoonSubscriber = rotateMoonPublisher.sink { _ in
                 Task {
-                    await moon.rotate(radiansPerSecond: 0.0005, axis: .y)
+                    await moon.rotate(radiansPerSecond: 0.0005, axis: .y, while: viewModel.appFlowState == .onSpaceship)
                 }
             }
         }
         .task {
             countdownSubscriber = countdownPublisher.sink { _ in
                 Task {
-                    try! await Task.sleep(nanoseconds: Time.getNanosecondsFromSeconds(seconds: 1))
+                    
+                    // Show and animate robot assistant message
+                    await Utility.animateText(text: "Preparing for travelling to Mars. Please, buckle yourself up.", inputText: $inputText)
                     
                     Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
                         guard
@@ -108,6 +114,12 @@ struct SpaceshipView: View {
                             return
                         }
                         timeRemaining -= 1
+                        
+                        count.model?.mesh = .generateText(
+                            "\(timeRemaining.formatted(.number))",
+                            extrusionDepth: 0.02,
+                            font: .systemFont(ofSize: 0.1)
+                        )
                     }
                 }
             }
@@ -158,8 +170,9 @@ extension SpaceshipView {
             mesh: .generateText("\(timeRemaining.formatted(.number))", extrusionDepth: 0.02, font: UIFont.systemFont(ofSize: 0.1)),
             materials: [SimpleMaterial(color: .cyan, roughness: 0.2, isMetallic: false)]
         )
-        
         headAnchorCountdown.addChild(count)
+        
+        // Trigger countdown
         countdownPublisher.send()
         
         content.add(skybox)

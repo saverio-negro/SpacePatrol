@@ -26,17 +26,16 @@ enum Axis {
 }
 
 extension Entity {
-    func rotate(radiansPerSecond: Float, axis: Axis) async {
+    func rotate(radiansPerSecond: Float, axis: Axis, while condition: Bool) async {
         
         var currentRadians: Float = 0
         
         let timeInterval: TimeInterval = 0.05
         let radiansPerTimeInterval = radiansPerSecond * Float(timeInterval)
         
-        await Time.scheduledTimer(timeInterval: timeInterval) {
+        await Time.scheduledTimer(timeInterval: timeInterval, condition: condition) {
             currentRadians += radiansPerTimeInterval
             self.transform.rotation = simd_quatf(angle: currentRadians, axis: axis.axisVector)
         }
-        
     }
 }

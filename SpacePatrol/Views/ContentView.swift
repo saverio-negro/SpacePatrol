@@ -39,8 +39,10 @@ struct ContentView: View {
                 introViewText
             case .onSpaceship:
                 EmptyView()
+                    .disabled(true)
             case .planetTravel:
                 EmptyView()
+                    .disabled(true)
             case .onPlanet:
                 planetViewText
             }

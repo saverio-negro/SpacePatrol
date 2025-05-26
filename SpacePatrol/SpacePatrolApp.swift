@@ -48,7 +48,7 @@ struct SpacePatrolApp: App {
             case .intro:
                 immersionStyle = .mixed
             case .onSpaceship:
-                immersionStyle = .progressive
+                immersionStyle = .full
             case .planetTravel:
                 immersionStyle = .full
             case .onPlanet:

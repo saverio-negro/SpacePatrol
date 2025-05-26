@@ -108,7 +108,7 @@ struct IntroView: View {
         .task {
             rotateMarsSubscriber = rotateMarsPublisher.sink { _ in
                 Task {
-                    await mars.rotate(radiansPerSecond: 0.1, axis: .y)
+                    await mars.rotate(radiansPerSecond: 0.1, axis: .y, while: viewModel.appFlowState == .intro)
                 }
             }
         }
@@ -177,7 +177,7 @@ extension IntroView {
         // Robot assistant texts
         let texts = [
             "Hello! Are you ready for an exciting adventure in space?",
-            "Hurray! Select a planet to travel to!"
+            "Hurray! Martians are waiting for you!"
         ]
         
         async let showTextAndWaveAnimation: Void = showTextAndWaveAnimation()
