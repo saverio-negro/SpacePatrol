@@ -8,6 +8,15 @@
     "objectMetadataList" : [
       [
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
+        "Root",
+        "GridMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root"
       ],
       {
@@ -18,15 +27,6 @@
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root",
         "Sphere"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
-        "Root",
-        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -96,7 +96,10 @@
     "objectMetadataList" : [
       [
         "778372D2-2550-4840-A066-EECE514681A0",
-        "Root"
+        "Root",
+        "Moon",
+        "geom",
+        "realistic"
       ],
       {
         "isExpanded" : true,
@@ -114,20 +117,59 @@
       {
         "isExpanded" : true,
         "isLocked" : false
-      }
-    ]
-  },
-  "9FDCB02F-D6C6-48C8-9500-145F27F2639C" : {
-    "objectMetadataList" : [
+      },
       [
-        "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
+        "778372D2-2550-4840-A066-EECE514681A0",
         "Root",
-        "Spaceship"
+        "Moon",
+        "geom"
       ],
       {
         "isExpanded" : true,
         "isLocked" : false
       },
+      [
+        "778372D2-2550-4840-A066-EECE514681A0",
+        "Root",
+        "Moon"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "778372D2-2550-4840-A066-EECE514681A0",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "778372D2-2550-4840-A066-EECE514681A0",
+        "Root",
+        "Moon",
+        "geom",
+        "realistic",
+        "materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "778372D2-2550-4840-A066-EECE514681A0",
+        "Root",
+        "Sun"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "9FDCB02F-D6C6-48C8-9500-145F27F2639C" : {
+    "objectMetadataList" : [
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
         "Root"
@@ -145,14 +187,11 @@
       {
         "isExpanded" : true,
         "isLocked" : false
-      }
-    ]
-  },
-  "CBEE2537-7B33-4178-9599-28E8E6764A43" : {
-    "objectMetadataList" : [
+      },
       [
-        "CBEE2537-7B33-4178-9599-28E8E6764A43",
-        "Root"
+        "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
+        "Root",
+        "Spaceship"
       ],
       {
         "isExpanded" : true,

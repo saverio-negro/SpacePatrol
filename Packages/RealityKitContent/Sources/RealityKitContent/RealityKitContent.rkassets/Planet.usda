@@ -1,0 +1,64 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.100.13)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "Mars" (
+        active = true
+        prepend references = @Mars.usdz@
+    )
+    {
+        float3 xformOp:scale = (200, 200, 200)
+        float3 xformOp:translate = (0, -20, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.19999999, 0.19999999, 0.19999999)
+                float radius = 0.099999994
+                token shapeType = "Sphere"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (3.3527613e-8, -0.000718683, 2.2351742e-8)
+                }
+            }
+        }
+
+        def RealityKitComponent "RigidBody"
+        {
+            bool gravityEnabled = 0
+            uniform token info:id = "RealityKit.RigidBody"
+            token motionType = "Static"
+
+            def RealityKitStruct "massFrame"
+            {
+                def RealityKitStruct "m_pose"
+                {
+                }
+            }
+
+            def RealityKitStruct "material"
+            {
+                double dynamicFriction = 0.5
+                double restitution = 0.2
+                double staticFriction = 0.5
+            }
+        }
+    }
+}
+
