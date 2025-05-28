@@ -568,5 +568,15 @@ def Xform "Root"
             float2 ui:nodegraph:node:pos = (93.5, 100.5)
         }
     }
+
+    def "Mars" (
+        active = true
+        prepend references = @Mars.usdz@
+    )
+    {
+        float3 xformOp:scale = (150, 150, 150)
+        float3 xformOp:translate = (0, -35, 60)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
 }
 

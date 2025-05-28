@@ -20,7 +20,7 @@ struct PlanetView: View {
         }
         .task {
             // Run ARKit Session
-            await handTrackingViewModel.runSession()
+//            await handTrackingViewModel.runSession()
         }
         .task {
             // Process hand updates

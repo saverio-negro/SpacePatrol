@@ -29,20 +29,25 @@ extension ModelEntity {
             mesh: .generateSphere(radius: 30000000)
         )
         
-        var material: UnlitMaterial? = UnlitMaterial()
+        var skyboxMaterial: UnlitMaterial?
         
         switch event {
         case .intro:
             break
         case .planetTravel:
-            break
+            fallthrough
         case .onSpaceship:
             fallthrough
         case .onPlanet:
-            material = TextureResource.getTextureForSkyBox(from: "Space") ?? nil
+            guard
+                let material = TextureResource.getTextureForSkyBox(from: "Space")
+            else {
+                return nil
+            }
+            skyboxMaterial = material
         }
         
-        guard let material = material else { return nil }
+        guard let material = skyboxMaterial else { return nil }
         skybox.model?.materials = [material]
         
         // Reverse sphere

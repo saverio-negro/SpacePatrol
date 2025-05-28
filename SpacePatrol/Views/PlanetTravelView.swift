@@ -9,11 +9,17 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 import Combine
+import AVKit
 
 struct PlanetTravelView: View {
     
+    @EnvironmentObject var viewModel: ViewModel
+    
     @State private var landingPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
     @State private var landingSubsciber: Cancellable? = nil
+    
+    @State private var marsPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
+    @State private var marsSubscriber: Cancellable? = nil
     
     let headAnchor = {
         let anchorEntity = AnchorEntity(.head)
@@ -29,8 +35,11 @@ struct PlanetTravelView: View {
         return anchorEntity
     }()
     
+    
     @State private var skybox = ModelEntity()
+    @State private var scene = Entity()
     @State private var sun = Entity()
+    @State private var mars = Entity()
     @State private var spaceship = Entity()
     @State private var inputText = ""
     @GestureState private var isButtonHeld = false
@@ -111,7 +120,38 @@ extension PlanetTravelView {
         await Utility.animateText(text: "Light speed modality on!", inputText: $inputText)
         
         // Change skybox material to video material
+        Bundle.main.videoMaterial(for: "lightspeed.mp4") { player, material in
+            let radians = 90 * Float.pi / 180
+            
+            skybox.model?.mesh = .generateSphere(radius: 2000)
+            skybox.model?.materials = [material]
+            skybox.transform.rotation = simd_quatf(angle: radians, axis: SIMD3<Float>(0, 1, 0))
+            player.play()
+        }
         
+        // Await for the video being played
+        try! await Task.sleep(nanoseconds: Time.getNanosecondsFromSeconds(seconds: 8))
+        
+        // Show Mars in immersive space
+        marsPublisher.send()
+        mars.transform.translation.y = 25
+        
+        // Get sun a bit farther
+        sun.transform.translation.z = -1000000
+        
+        // Reset skybox mesh and materials
+        skybox.model?.mesh = .generateSphere(radius: 30000000)
+        guard let material = TextureResource.getTextureForSkyBox(from: "Space") else { return }
+        skybox.model?.materials = [material]
+        
+        // Show robot assistant message to communicate about the landing
+        await Utility.animateText(text: "We are landing on Mars", inputText: $inputText)
+        
+        // Await for the landing to happen
+        try! await Task.sleep(nanoseconds: Time.getNanosecondsFromSeconds(seconds: 10))
+        
+        // Load `PlanetView` into the `ImmersiveScene` scene object
+        viewModel.appFlowState = .onPlanet
     }
 }
 
@@ -121,6 +161,7 @@ extension PlanetTravelView {
     func setupContentEntity(content: RealityViewContent, attachments: RealityViewAttachments) async {
         // Load in scene
         guard let scene = try? await Entity(named: "PlanetTravel", in: realityKitContentBundle) else { return }
+        self.scene = scene
         
         // Load in initial skybox
         guard let skybox = ModelEntity.generateSkyBox(when: .onSpaceship) else { return }
@@ -141,6 +182,17 @@ extension PlanetTravelView {
         // Load in assistant message attachment
         guard let message = attachments.entity(for: "attachment") else { return }
         headAnchorAttachment.addChild(message)
+        
+        // Load in Mars
+        guard let mars = scene.findEntity(named: "Mars") else { return }
+        self.mars = mars
+        marsSubscriber = marsPublisher.sink { _ in
+            content.add(mars)
+            
+            Task {
+                await self.mars.rotate(radiansPerSecond: 0.01, axis: .y, while: viewModel.appFlowState == .planetTravel)
+            }
+        }
         
         content.add(skybox)
         content.add(sun)

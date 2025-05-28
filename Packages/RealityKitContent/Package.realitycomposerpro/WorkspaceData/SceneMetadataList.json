@@ -8,15 +8,6 @@
     "objectMetadataList" : [
       [
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
-        "Root",
-        "GridMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root"
       ],
       {
@@ -27,6 +18,15 @@
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root",
         "Sphere"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
+        "Root",
+        "GridMaterial"
       ],
       {
         "isExpanded" : true,
@@ -44,6 +44,20 @@
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root",
+        "robot_idle",
+        "Mars",
+        "geom",
+        "realistic",
+        "materials",
+        "usdpreviewsurface4sg"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
+        "Root",
         "SkyDome"
       ],
       {
@@ -54,20 +68,6 @@
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
-        "Root",
-        "robot_idle",
-        "Mars",
-        "geom",
-        "realistic",
-        "materials",
-        "usdpreviewsurface4sg"
       ],
       {
         "isExpanded" : true,
@@ -96,12 +96,7 @@
     "objectMetadataList" : [
       [
         "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
-        "Moon",
-        "geom",
-        "realistic",
-        "materials",
-        "usdpreviewsurface2sg"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -109,7 +104,12 @@
       },
       [
         "778372D2-2550-4840-A066-EECE514681A0",
-        "Root"
+        "Root",
+        "Moon",
+        "geom",
+        "realistic",
+        "materials",
+        "usdpreviewsurface2sg"
       ],
       {
         "isExpanded" : true,
@@ -122,16 +122,6 @@
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
         "Root",
-        "Spaceship",
-        "Materials"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
-        "Root",
         "Spaceship"
       ],
       {
@@ -141,6 +131,16 @@
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
         "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
+        "Root",
+        "Spaceship",
+        "Materials"
       ],
       {
         "isExpanded" : true,
