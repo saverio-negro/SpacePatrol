@@ -19,6 +19,9 @@ struct PlanetView: View {
     @State private var userSelectionPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
     @State private var userSelectionSubscriber: Cancellable?
     
+    @State private var vectorFieldControlsPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
+    @State private var vectorFieldControlsSubscriber: Cancellable?
+    
     @State private var mars = Entity()
     @State private var skybox = Entity()
     @State private var robot = Entity()
@@ -26,11 +29,20 @@ struct PlanetView: View {
     @State private var inputText = ""
     @State private var showButtons = false
     
+    let headAnchorAttachment = {
+        let anchorEntity = AnchorEntity(.head)
+        anchorEntity.position = [-0.7, 0, -1.0]
+        let radians = 10 * Float.pi / 180
+        anchorEntity.transform.rotation = simd_quatf(angle: radians, axis: [0, 1, 0])
+        
+        return anchorEntity
+    }()
+    
     var robotMessage: some View {
         VStack {
             Text(inputText)
                 .frame(width: 600, alignment: .leading)
-                .font(.extraLargeTitle2)
+                .font(.extraLargeTitle)
                 .fontWeight(.regular)
                 .padding(40)
                 .glassBackgroundEffect()
@@ -67,12 +79,37 @@ struct PlanetView: View {
         )
     }
     
+    var vectorFieldControls: some View {
+        VStack {
+            Text("Vector Field Controls")
+                .font(.extraLargeTitle2)
+            
+            Button {
+                
+            } label: {
+                Text("Spawn Vector Field")
+                    .font(.largeTitle)
+            }
+        }
+        .padding()
+        .frame(minWidth: 500, maxWidth: 500,
+               minHeight: 500, maxHeight: 500
+        )
+        .glassBackgroundEffect()
+        
+        // Implement controls for manipulating vector field
+    }
+    
     var body: some View {
         RealityView { content, attachments in
             await setupContentAndAttachments(content: content, attachments: attachments)
         } attachments: {
             Attachment(id: "robotMessage") {
                 robotMessage
+            }
+            
+            Attachment(id: "vectorFieldControls") {
+                vectorFieldControls
             }
         }
         .gesture(
@@ -119,28 +156,37 @@ extension PlanetView {
         guard let robot = robotScene.findEntity(named: "robot_idle") else { return }
         self.robot = robot
         robot.transform.scale = [0.0025, 0.0025, 0.0025]
-        robot.transform.translation = [0.3, 0.3, -1.5]
+        robot.transform.translation = [0.8, 0.3, -1.5]
+        robot.transform.rotation = simd_quatf(angle: Float(Angle(degrees: -20).radians), axis: [0, 1, 0])
         robot.generateCollisionShapes(recursive: true)
         robot.components.set(InputTargetComponent())
         let idleAnimation = robot.availableAnimations[0]
         robot.playAnimation(idleAnimation.repeat())
         
         // Load in robot message attachment and set its transform matrix relative to the robot entity
-        guard let attachment = attachments.entity(for: "robotMessage") else { fatalError("Failed loading in attachments") }
-        let transformMatrixRelativeToRobot = attachment.transformMatrix(relativeTo: robot)
+        guard let robotMessageAttachment = attachments.entity(for: "robotMessage") else { fatalError("Failed loading in attachments") }
+        let transformMatrixRelativeToRobot = robotMessageAttachment.transformMatrix(relativeTo: robot)
         let newTransformMatrixRelativeToRobot = float4x4(
             transformMatrixRelativeToRobot.columns.0,
             transformMatrixRelativeToRobot.columns.1,
             transformMatrixRelativeToRobot.columns.2,
             SIMD4<Float>(0, 250, 0, 1)
         )
-        attachment.setTransformMatrix(newTransformMatrixRelativeToRobot, relativeTo: robot)
+        robotMessageAttachment.setTransformMatrix(newTransformMatrixRelativeToRobot, relativeTo: robot)
+        
+        // Load in vector field controls
+        guard let vectorFieldControlsAttachment = attachments.entity(for: "vectorFieldControls") else { fatalError("Failed loading in attachments") }
+        headAnchorAttachment.addChild(vectorFieldControlsAttachment)
+        
+        vectorFieldControlsSubscriber = vectorFieldControlsPublisher.sink { _ in
+            content.add(headAnchorAttachment)
+        }
         
         
         content.add(skybox)
         content.add(mars)
         content.add(robot)
-        content.add(attachment)
+        content.add(robotMessageAttachment)
     }
 }
 
@@ -159,7 +205,7 @@ extension PlanetView {
             viewModel.assistantState = .excited
             try! await Task.sleep(nanoseconds: Time.getNanosecondsFromSeconds(seconds: 2))
             inputText = "..."
-            openWindow(id: "VectorFieldSystem")
+            vectorFieldControlsPublisher.send()
             
         } else {
             await Utility.animateText(text: "Have fun with the Martian vector field system", inputText: $inputText)

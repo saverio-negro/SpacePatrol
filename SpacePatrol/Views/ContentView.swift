@@ -21,14 +21,16 @@ struct ContentView: View {
                 .font(.extraLargeTitle2)
                 .padding()
             Text("Hint: Tap onto the robot assistant.")
-                .font(.title)
+                .font(.largeTitle)
                 .padding()
         }
     }
     
     var planetViewText: some View {
         VStack {
-            
+            Text("Hint: Tap onto the robot assistant.")
+                .font(.largeTitle)
+                .padding()
         }
     }
     
@@ -37,6 +39,8 @@ struct ContentView: View {
             switch viewModel.appFlowState {
             case .intro:
                 introViewText
+            case .onPlanet:
+                planetViewText
             default:
                 EmptyView()
                     .disabled(true)
