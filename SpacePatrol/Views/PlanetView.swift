@@ -15,7 +15,6 @@ struct PlanetView: View {
     
     @EnvironmentObject var viewModel: ViewModel
     @StateObject var handTrackingViewModel = HandTrackingViewModel()
-    @Environment(\.openWindow) var openWindow
     
     @State private var userSelectionPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
     @State private var userSelectionSubscriber: Cancellable?
@@ -29,20 +28,15 @@ struct PlanetView: View {
     @State private var mars = Entity()
     @State private var skybox = Entity()
     @State private var robot = Entity()
+    @State private var basketball = ModelEntity()
     @State private var showRobotMessage = false
     @State private var inputText = ""
     @State private var showButtons = false
-    
-    // Vector-Field-Control-Related Properties
-    @State private var selectedFieldType: FieldType = .radial
-    @State private var selectedFieldWidth: Float = 0
-    @State private var selectedFieldHeight: Float = 0
-    @State private var selectedFieldDepth: Float = 0
-    @State private var selectedFieldDensity: FieldDensity = .medium
+    @State private var backupContentEntity: RealityViewContent?
     
     let headAnchorAttachment = {
         let anchorEntity = AnchorEntity(.head)
-        anchorEntity.position = [-0.7, 0, -1.0]
+        anchorEntity.position = [-0.4, 0, -1.0]
         let radians = 10 * Float.pi / 180
         anchorEntity.transform.rotation = simd_quatf(angle: radians, axis: [0, 1, 0])
         
@@ -97,7 +91,12 @@ struct PlanetView: View {
             fieldHeight: $viewModel.fieldHeight,
             fieldDepth: $viewModel.fieldDepth,
             fieldDensity: $viewModel.fieldDensity,
-            isFieldActive: $viewModel.isFieldActive
+            isFieldActive: $viewModel.isFieldActive,
+            radialDirection: $viewModel.radialDirection,
+            aboutAxis: $viewModel.aboutAxis,
+            rotation: $viewModel.rotation,
+            duration: $viewModel.duration,
+            magnitude: $viewModel.magnitude
         ) {
             // Perform action upon toggling button control
             vectorFieldPublisher.send()
@@ -152,15 +151,15 @@ extension PlanetView {
         // Load in Mars
         guard let mars = scene.findEntity(named: "Mars") else { fatalError("Failed loading in Mars.") }
         self.mars = mars
+        mars.generateCollisionShapes(recursive: true)
         
         // Load in robot assistant and its animations
-        
         // Load in robot scene
         guard let robotScene = try? await Entity(named: "RobotOnMars", in: realityKitContentBundle) else { fatalError("Failed loading in the scene.") }
         guard let robot = robotScene.findEntity(named: "robot_idle") else { return }
         self.robot = robot
         robot.transform.scale = [0.0025, 0.0025, 0.0025]
-        robot.transform.translation = [0.8, 0.3, -1.5]
+        robot.transform.translation = [0.8, 0.3, -1.3]
         robot.transform.rotation = simd_quatf(angle: Float(Angle(degrees: -20).radians), axis: [0, 1, 0])
         robot.generateCollisionShapes(recursive: true)
         robot.components.set(InputTargetComponent())
@@ -178,6 +177,11 @@ extension PlanetView {
         )
         robotMessageAttachment.setTransformMatrix(newTransformMatrixRelativeToRobot, relativeTo: robot)
         
+        // Load in basketball
+        guard let basketball = viewModel.createBasketBall() else { return }
+        self.basketball = basketball
+        basketball.transform.translation = SIMD3<Float>(0, 4, -2)
+        
         // Load in vector field controls
         guard let vectorFieldControlsAttachment = attachments.entity(for: "vectorFieldControls") else { fatalError("Failed loading in attachments") }
         headAnchorAttachment.addChild(vectorFieldControlsAttachment)
@@ -186,21 +190,57 @@ extension PlanetView {
             content.add(headAnchorAttachment)
         }
         
-        // Load in vector Field
-        vectorFieldSubscriber = vectorFieldPublisher.sink { _ in
-            
-            // Create `FieldAreaComponent` object
-            
-            // Create `FieldTraitComponent` object
-            
-            // Spawn vector field
-        }
-        
-        
         content.add(skybox)
         content.add(mars)
         content.add(robot)
         content.add(robotMessageAttachment)
+        content.add(basketball)
+        backupContentEntity = content
+        
+        // Load in vector Field
+        vectorFieldSubscriber = vectorFieldPublisher.sink { _ in
+            
+            if viewModel.isFieldActive {
+                // Create `FieldTraitComponent` object
+                let fieldTraitComponent = FieldTraitComponent(
+                    fieldTrait:
+                    {
+                        switch viewModel.fieldType {
+                        case .radial:
+                            FieldTrait.radial(direction: viewModel.radialDirection) { vectorPosition, time in
+                                viewModel.magnitude
+                            }
+                        case .spiral:
+                            FieldTrait.spiral(aboutAxis: viewModel.aboutAxis, rotation: viewModel.rotation) { vectorPosition, time in
+                                viewModel.magnitude
+                            }
+                        }
+                    }()
+                )
+                
+                // Create `FieldAreaComponent` object
+                let fieldAreaComponent = FieldAreaComponent(
+                    width: viewModel.fieldWidth,
+                    height: viewModel.fieldHeight,
+                    depth: viewModel.fieldDepth
+                )
+                
+                // Spawn vector field
+                let field = Field(content: content, area: fieldAreaComponent, trait: fieldTraitComponent, relativeTo: nil)
+                Task {
+                    await field.addForceField(
+                        vectorDensity: viewModel.fieldDensity,
+                        duration: viewModel.duration,
+                        on: basketball
+                    )
+                }
+            } else {
+                content.entities.removeAll()
+                if let backupContentEntity = backupContentEntity {
+                    content.entities = backupContentEntity.entities
+                }
+            }
+        }
     }
 }
 

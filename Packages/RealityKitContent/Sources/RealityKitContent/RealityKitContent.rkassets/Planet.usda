@@ -20,7 +20,7 @@ def Xform "Root"
     {
         quatf xformOp:orient = (0.9063078, 0.4226182, 0, 0)
         float3 xformOp:scale = (5000, 5000, 5000)
-        float3 xformOp:translate = (0, -497.05, 0)
+        float3 xformOp:translate = (0, -497.1, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "Collider"
@@ -33,6 +33,7 @@ def Xform "Root"
             def RealityKitStruct "Shape"
             {
                 float3 extent = (0.19999999, 0.19999999, 0.19999999)
+                float height = 0.19999999
                 float radius = 0.099999994
                 token shapeType = "Sphere"
 

@@ -88,12 +88,12 @@ public class Field {
         return discreteVectorArray
     }
     
-    private func force(at vectorPosition: SIMD3<Float>) -> SIMD3<Float> {
+    private func force(at vectorPosition: SIMD3<Float>, time: TimeInterval) -> SIMD3<Float> {
         if let fieldTrait = trait?.fieldTrait {
             // Define force depending on the trait of the field
             switch fieldTrait {
             case .radial(let direction, let magnitude):
-                let magnitude = magnitude(vectorPosition)
+                let magnitude = magnitude(vectorPosition, time)
                 let radialFieldSystem = RadialFieldSystem(
                     inOutDirection: direction,
                     magnitude: magnitude,
@@ -101,7 +101,7 @@ public class Field {
                 )
                 return radialFieldSystem.vectorField
             case .spiral(let aboutAxis, let rotation, let magnitude):
-                let magnitude = magnitude(vectorPosition)
+                let magnitude = magnitude(vectorPosition, time)
                 let spiralFieldSystem = SpiralFieldSystem(
                     aboutAxis: aboutAxis,
                     rotation: rotation,
@@ -110,7 +110,7 @@ public class Field {
                 )
                 return spiralFieldSystem.vectorField
             case .custom(let fieldFunction):
-                let vectorField = fieldFunction(vectorPosition)
+                let vectorField = fieldFunction(vectorPosition, time)
                 let customFieldSystem = CustomFieldSystem(vectorField: vectorField)
                 return customFieldSystem.vectorField
             }
@@ -132,7 +132,7 @@ public class Field {
     public func addForceField(vectorDensity: VectorDensity, duration: TimeInterval?, on entity: ModelEntity) async {
         let discreteVectorArray = await self.discretizedArea(vectorDensity: vectorDensity)
         
-        RunLoop.main.schedule(after: .init(.init(timeIntervalSinceNow: 10))) {
+        RunLoop.main.schedule(after: .init(.init(timeIntervalSinceNow: duration ?? .infinity))) {
             self.eventUpdateSubscription?.cancel()
         }
         
@@ -140,12 +140,14 @@ public class Field {
         // — from the `RealityViewContent` object — of the scene the `RealityView` is loaded in — typically,
         // your `ImmersiveSpace` scene.
         var timeElapsed: TimeInterval = .zero
+        var timeBuffer: TimeInterval = .zero
+        let customDeltaTime: TimeInterval = 0.2
         
         eventUpdateSubscription = content.subscribe(to: SceneEvents.Update.self) { event in
             
-            if timeElapsed > 0.5 {
+            if timeBuffer > customDeltaTime {
                 for vectorPosition in discreteVectorArray {
-                    let force = self.force(at: vectorPosition)
+                    let force = self.force(at: vectorPosition, time: timeElapsed) * Float(customDeltaTime)
                     let materializedForce = self.materializeFieldVector(vector: force, at: vectorPosition)
                     print("Materialized force (\(force.x), \(force.y), \(force.z)) at (\(vectorPosition.x), \(vectorPosition.y), \(vectorPosition.z))")
                     self.content.add(materializedForce)
@@ -153,9 +155,11 @@ public class Field {
                         await entity.addForce(force, at: vectorPosition, relativeTo: nil)
                     }
                 }
-                timeElapsed = .zero
+                timeBuffer = .zero
             }
+            
             timeElapsed += event.deltaTime
+            timeBuffer += event.deltaTime
         }
     }
 }

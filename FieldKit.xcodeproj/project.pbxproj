@@ -16,7 +16,7 @@
 		295186CF2DE88AF300A0A53F /* VectorDensity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295186C42DE88AF300A0A53F /* VectorDensity.swift */; };
 		295186D02DE88AF300A0A53F /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295186BC2DE88AF300A0A53F /* Field.swift */; };
 		295186D12DE88AF300A0A53F /* FieldKit.docc in Sources */ = {isa = PBXBuildFile; fileRef = 295186C72DE88AF300A0A53F /* FieldKit.docc */; };
-		295186D22DE88AF300A0A53F /* FieldKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 295186C62DE88AF300A0A53F /* FieldKit.h */; };
+		295186D22DE88AF300A0A53F /* FieldKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 295186C62DE88AF300A0A53F /* FieldKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */

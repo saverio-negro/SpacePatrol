@@ -8,15 +8,6 @@
     "objectMetadataList" : [
       [
         "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
-        "Root",
-        "GridMaterial"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
         "Root"
       ],
       {
@@ -31,6 +22,15 @@
       {
         "isExpanded" : true,
         "isLocked" : false
+      },
+      [
+        "0A9B4653-B11E-4D6A-850E-C6FCB621626C",
+        "Root",
+        "GridMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
       }
     ]
   },
@@ -41,6 +41,14 @@
   },
   "26DBAE76-5DD8-47B6-A085-1B4ADA111097" : {
     "objectMetadataList" : [
+      [
+        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
       [
         "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
         "Root",
@@ -63,14 +71,6 @@
       {
         "disallowsFraming" : true,
         "isExpanded" : false,
-        "isLocked" : false
-      },
-      [
-        "26DBAE76-5DD8-47B6-A085-1B4ADA111097",
-        "Root"
-      ],
-      {
-        "isExpanded" : true,
         "isLocked" : false
       }
     ]
@@ -110,8 +110,16 @@
         "778372D2-2550-4840-A066-EECE514681A0",
         "Root",
         "Moon",
-        "geom",
-        "realistic"
+        "geom"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "778372D2-2550-4840-A066-EECE514681A0",
+        "Root",
+        "Moon"
       ],
       {
         "isExpanded" : true,
@@ -133,8 +141,7 @@
       [
         "778372D2-2550-4840-A066-EECE514681A0",
         "Root",
-        "Moon",
-        "geom"
+        "Sun"
       ],
       {
         "isExpanded" : true,
@@ -143,7 +150,9 @@
       [
         "778372D2-2550-4840-A066-EECE514681A0",
         "Root",
-        "Moon"
+        "Moon",
+        "geom",
+        "realistic"
       ],
       {
         "isExpanded" : true,
@@ -168,15 +177,6 @@
       {
         "isExpanded" : true,
         "isLocked" : false
-      },
-      [
-        "778372D2-2550-4840-A066-EECE514681A0",
-        "Root",
-        "Sun"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
       }
     ]
   },
@@ -184,8 +184,7 @@
     "objectMetadataList" : [
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
-        "Root",
-        "robot_idle"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -193,7 +192,8 @@
       },
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
-        "Root"
+        "Root",
+        "Spaceship"
       ],
       {
         "isExpanded" : true,
@@ -212,7 +212,7 @@
       [
         "9FDCB02F-D6C6-48C8-9500-145F27F2639C",
         "Root",
-        "Spaceship"
+        "robot_idle"
       ],
       {
         "isExpanded" : true,

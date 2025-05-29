@@ -2,7 +2,8 @@
   "advancedEditorSelectedIdentifier" : "ProjectBrowser",
   "openSceneRelativePaths" : [
     "Scene.usda",
-    "PlanetTravel.usda"
+    "PlanetTravel.usda",
+    "Planet.usda"
   ],
   "recentIdentifiers" : {
     "26DBAE76-5DD8-47B6-A085-1B4ADA111097" : [
@@ -231,6 +232,52 @@
           0.17060822,
           2.3143883,
           8.753022,
+          1
+        ]
+      }
+    ],
+    "74BC4C8E-D14A-45EF-BDEA-6A2170F37E8A" : [
+      {
+        "date" : 770246640.09412,
+        "title" : "Untitled",
+        "transform" : [
+          0.9998027,
+          0,
+          -0.019865636,
+          0,
+          -0.0140471235,
+          0.7071068,
+          -0.7069672,
+          0,
+          0.014047127,
+          0.70710677,
+          0.70696735,
+          0,
+          0.16003293,
+          30.22691,
+          39.933018,
+          1
+        ]
+      },
+      {
+        "date" : 770246635.543023,
+        "title" : "Untitled",
+        "transform" : [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0.7071069,
+          -0.70710677,
+          0,
+          0,
+          0.70710677,
+          0.7071069,
+          0,
+          0,
+          2.1073031,
+          2.1073034,
           1
         ]
       }
@@ -683,5 +730,5 @@
   "sceneViewportBackgroundColors" : {
 
   },
-  "selectedSceneRelativePath" : "PlanetTravel.usda"
+  "selectedSceneRelativePath" : "Planet.usda"
 }

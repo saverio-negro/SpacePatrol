@@ -22,4 +22,15 @@ public enum VectorDensity {
             return 0.1
         }
     }
+    
+    public var densityName: String {
+        switch self {
+        case .low:
+            "Low"
+        case .medium:
+            "Medium"
+        case .high:
+            "High"
+        }
+    }
 }

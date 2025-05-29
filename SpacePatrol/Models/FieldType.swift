@@ -10,7 +10,6 @@ import SwiftUI
 enum FieldType {
     case radial
     case spiral
-    case custom
     
     var typeName: String {
         switch self {
@@ -18,8 +17,6 @@ enum FieldType {
             "Radial"
         case .spiral:
             "Spiral"
-        case .custom:
-            "Custom"
         }
     }
 }
