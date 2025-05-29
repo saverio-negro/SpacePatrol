@@ -9,6 +9,7 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 import Combine
+import FieldKit
 
 struct PlanetView: View {
     
@@ -22,12 +23,22 @@ struct PlanetView: View {
     @State private var vectorFieldControlsPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
     @State private var vectorFieldControlsSubscriber: Cancellable?
     
+    @State private var vectorFieldPublisher: PassthroughSubject<Void, Never> = PassthroughSubject()
+    @State private var vectorFieldSubscriber: Cancellable?
+    
     @State private var mars = Entity()
     @State private var skybox = Entity()
     @State private var robot = Entity()
     @State private var showRobotMessage = false
     @State private var inputText = ""
     @State private var showButtons = false
+    
+    // Vector-Field-Control-Related Properties
+    @State private var selectedFieldType: FieldType = .radial
+    @State private var selectedFieldWidth: Float = 0
+    @State private var selectedFieldHeight: Float = 0
+    @State private var selectedFieldDepth: Float = 0
+    @State private var selectedFieldDensity: FieldDensity = .medium
     
     let headAnchorAttachment = {
         let anchorEntity = AnchorEntity(.head)
@@ -80,24 +91,17 @@ struct PlanetView: View {
     }
     
     var vectorFieldControls: some View {
-        VStack {
-            Text("Vector Field Controls")
-                .font(.extraLargeTitle2)
-            
-            Button {
-                
-            } label: {
-                Text("Spawn Vector Field")
-                    .font(.largeTitle)
-            }
+        VectorFieldControlsView(
+            fieldType: $viewModel.fieldType,
+            fieldWidth: $viewModel.fieldWidth,
+            fieldHeight: $viewModel.fieldHeight,
+            fieldDepth: $viewModel.fieldDepth,
+            fieldDensity: $viewModel.fieldDensity,
+            isFieldActive: $viewModel.isFieldActive
+        ) {
+            // Perform action upon toggling button control
+            vectorFieldPublisher.send()
         }
-        .padding()
-        .frame(minWidth: 500, maxWidth: 500,
-               minHeight: 500, maxHeight: 500
-        )
-        .glassBackgroundEffect()
-        
-        // Implement controls for manipulating vector field
     }
     
     var body: some View {
@@ -180,6 +184,16 @@ extension PlanetView {
         
         vectorFieldControlsSubscriber = vectorFieldControlsPublisher.sink { _ in
             content.add(headAnchorAttachment)
+        }
+        
+        // Load in vector Field
+        vectorFieldSubscriber = vectorFieldPublisher.sink { _ in
+            
+            // Create `FieldAreaComponent` object
+            
+            // Create `FieldTraitComponent` object
+            
+            // Spawn vector field
         }
         
         

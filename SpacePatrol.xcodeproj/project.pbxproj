@@ -7,10 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		295186B82DE88A4200A0A53F /* FieldKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 295186B62DE88A1400A0A53F /* FieldKit.framework */; };
 		297C5F442DC7B6670024B998 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = 297C5F432DC7B6670024B998 /* RealityKitContent */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		295186B52DE88A1400A0A53F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 295186B12DE88A1400A0A53F /* FieldKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 291ECD8D2DCC308F0078A90F;
+			remoteInfo = FieldKit;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		295186B12DE88A1400A0A53F /* FieldKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = FieldKit.xcodeproj; sourceTree = "<group>"; };
 		297C5F3E2DC7B6670024B998 /* SpacePatrol.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpacePatrol.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		297C5F422DC7B6670024B998 /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -41,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				295186B82DE88A4200A0A53F /* FieldKit.framework in Frameworks */,
 				297C5F442DC7B6670024B998 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -48,11 +61,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		295186B22DE88A1400A0A53F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				295186B62DE88A1400A0A53F /* FieldKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		295186B72DE88A4200A0A53F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		297C5F352DC7B6670024B998 = {
 			isa = PBXGroup;
 			children = (
+				295186B12DE88A1400A0A53F /* FieldKit.xcodeproj */,
 				297C5F402DC7B6670024B998 /* SpacePatrol */,
 				297C5F412DC7B6670024B998 /* Packages */,
+				295186B72DE88A4200A0A53F /* Frameworks */,
 				297C5F3F2DC7B6670024B998 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,7 +137,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					297C5F3D2DC7B6670024B998 = {
 						CreatedOnToolsVersion = 16.2;
@@ -126,12 +156,28 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 297C5F3F2DC7B6670024B998 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 295186B22DE88A1400A0A53F /* Products */;
+					ProjectRef = 295186B12DE88A1400A0A53F /* FieldKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				297C5F3D2DC7B6670024B998 /* SpacePatrol */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		295186B62DE88A1400A0A53F /* FieldKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FieldKit.framework;
+			remoteRef = 295186B52DE88A1400A0A53F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		297C5F3C2DC7B6670024B998 /* Resources */ = {
@@ -162,6 +208,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SpacePatrol/Preview Content\"";
+				DEVELOPMENT_TEAM = K8S72FGWBU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
@@ -187,6 +234,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"SpacePatrol/Preview Content\"";
+				DEVELOPMENT_TEAM = K8S72FGWBU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
@@ -239,7 +287,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = K8S72FGWBU;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -303,7 +350,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = K8S72FGWBU;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
