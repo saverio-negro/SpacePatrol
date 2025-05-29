@@ -1,0 +1,42 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 2.0 (448.100.13)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    def "robot_idle" (
+        active = true
+        references = @robot_idle.usdz@
+    )
+    {
+        reorder nameChildren = ["Mars", "Materials", "temp", "mixamorig_Hips", "AnimationLibrary"]
+        float2 ui:nodegraph:node:pos = (20, 20)
+        int ui:nodegraph:node:stackingOrder = 1
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "AnimationLibrary"
+        {
+            token info:id = "RealityKit.AnimationLibrary"
+
+            def RealityKitAnimationFile "robot_waving"
+            {
+                uniform asset file = @robot_waving.usdz@
+                uniform string name = "robot_waving"
+            }
+
+            def RealityKitAnimationFile "robot_victory"
+            {
+                uniform asset file = @robot_victory.usdz@
+                uniform string name = "robot_victory"
+            }
+        }
+    }
+}
+

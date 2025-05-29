@@ -12,11 +12,15 @@ def Xform "Root"
 {
     def "Mars" (
         active = true
-        prepend references = @Mars.usdz@
+        customData = {
+            float3 rotationEulerHint = (0.8726645, 0, 0)
+        }
+        references = @Mars.usdz@
     )
     {
-        float3 xformOp:scale = (200, 200, 200)
-        float3 xformOp:translate = (0, -20, 0)
+        quatf xformOp:orient = (0.9063078, 0.4226182, 0, 0)
+        float3 xformOp:scale = (5000, 5000, 5000)
+        float3 xformOp:translate = (0, -497.05, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "Collider"

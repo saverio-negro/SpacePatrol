@@ -37,14 +37,9 @@ struct ContentView: View {
             switch viewModel.appFlowState {
             case .intro:
                 introViewText
-            case .onSpaceship:
+            default:
                 EmptyView()
                     .disabled(true)
-            case .planetTravel:
-                EmptyView()
-                    .disabled(true)
-            case .onPlanet:
-                planetViewText
             }
         }
         .padding()

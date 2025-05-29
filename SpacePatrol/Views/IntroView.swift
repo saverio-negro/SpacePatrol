@@ -53,7 +53,8 @@ struct IntroView: View {
                 }
                 
                 Button {
-                    
+                    showTextField = false
+                    viewModel.assistantState = .idle
                 } label: {
                     Text("No")
                         .font(.extraLargeTitle2)
@@ -193,6 +194,7 @@ extension IntroView {
         await self.animateText(text: texts[1])
         
         withAnimation(Animation.easeInOut(duration: 1)) {
+            viewModel.assistantState = .idle
             viewModel.appFlowState = .onSpaceship
         }
     }

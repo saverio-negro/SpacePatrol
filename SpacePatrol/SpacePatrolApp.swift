@@ -22,9 +22,18 @@ struct SpacePatrolApp: App {
                        minHeight: 80, maxHeight: 160
                 )
                 .glassBackgroundEffect()
-                .opacity(viewModel.appFlowState == .onSpaceship || viewModel.appFlowState == .planetTravel ? 0 : 1)
+                .opacity(viewModel.appFlowState == .onSpaceship || viewModel.appFlowState == .planetTravel || viewModel.appFlowState == .onPlanet ? 0 : 1)
         }
         .windowStyle(.plain)
+        
+        WindowGroup(id: "VectorFieldSystem") {
+            VectorFieldSystemView()
+                .environmentObject(viewModel)
+                .frame(minWidth: 300, maxWidth: 500,
+                       minHeight: 300, maxHeight: 500
+                )
+                .glassBackgroundEffect()
+        }
         
         ImmersiveSpace(id: "ImmersiveSpace") {
             switch viewModel.appFlowState {
