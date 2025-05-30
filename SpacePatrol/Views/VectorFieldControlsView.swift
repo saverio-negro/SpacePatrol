@@ -210,8 +210,14 @@ struct VectorFieldControlsView: View {
             }
             
             Toggle(isOn: $isFieldActive) {
-                Text("Spawn Vector Field")
-                    .font(.largeTitle)
+                
+                if isFieldActive {
+                    Text("Release Vector Field")
+                        .font(.largeTitle)
+                } else {
+                    Text("Spawn Vector Field")
+                        .font(.largeTitle)
+                }
             }
             .toggleStyle(.button)
             .padding(30)

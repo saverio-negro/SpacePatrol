@@ -45,7 +45,7 @@ struct PlanetView: View {
     let sphere = {
         // Generate Box Entity
         let sphere = ModelEntity(
-            mesh: .generateSphere(radius: 0.2),
+            mesh: .generateSphere(radius: 0.1),
             materials: [SimpleMaterial(color: .blue, roughness: 0.3, isMetallic: false)]
         )
         
@@ -53,7 +53,7 @@ struct PlanetView: View {
         sphere.components.set(InputTargetComponent(allowedInputTypes: [.direct, .indirect]))
         sphere.components.set(
                 PhysicsBodyComponent(
-                    massProperties: .init(mass: 3),
+                    massProperties: .init(mass: 2.5),
                 material: .generate(friction: 0.2, restitution: 0.3),
                 mode: .dynamic
             )

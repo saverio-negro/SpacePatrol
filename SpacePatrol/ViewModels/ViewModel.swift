@@ -12,7 +12,7 @@ import RealityKit
 class ViewModel: ObservableObject {
     
     // App and robot assistant state properties
-    @Published var appFlowState: AppFlowState = .intro
+    @Published var appFlowState: AppFlowState = .onPlanet
     @Published var assistantState: AssistantState = .idle
     
     // Vector-Field-Control Related Properties
