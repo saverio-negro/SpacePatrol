@@ -53,7 +53,7 @@ struct PlanetView: View {
         sphere.components.set(InputTargetComponent(allowedInputTypes: [.direct, .indirect]))
         sphere.components.set(
                 PhysicsBodyComponent(
-                    massProperties: .init(mass: 2.5),
+                    massProperties: .init(mass: 2),
                 material: .generate(friction: 0.2, restitution: 0.3),
                 mode: .dynamic
             )
