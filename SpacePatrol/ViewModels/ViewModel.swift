@@ -17,7 +17,7 @@ class ViewModel: ObservableObject {
     
     // Vector-Field-Control Related Properties
     @Published var fieldType: FieldType = .radial
-    @Published var fieldVolume: Float = 6
+    @Published var fieldVolume: Float = 5
     @Published var fieldDensity: VectorDensity = .low
     @Published var isFieldActive: Bool = false
     @Published var duration: TimeInterval = 10
