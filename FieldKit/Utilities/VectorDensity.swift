@@ -15,11 +15,11 @@ public enum VectorDensity {
     var stepover: Float {
         switch self {
         case .low:
-            return 1.0
+            return 2.0
         case .medium:
-            return 0.5
+            return 1.5
         case .high:
-            return 0.1
+            return 1.0
         }
     }
     

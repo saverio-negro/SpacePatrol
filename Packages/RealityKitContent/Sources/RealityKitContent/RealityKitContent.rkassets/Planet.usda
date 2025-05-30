@@ -19,8 +19,8 @@ def Xform "Root"
     )
     {
         quatf xformOp:orient = (0.9063078, 0.4226182, 0, 0)
-        float3 xformOp:scale = (5000, 5000, 5000)
-        float3 xformOp:translate = (0, -497.1, 0)
+        float3 xformOp:scale = (2000, 2000, 2000)
+        float3 xformOp:translate = (0, -198.7, 4)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
         def RealityKitComponent "Collider"
@@ -46,12 +46,17 @@ def Xform "Root"
 
         def RealityKitComponent "RigidBody"
         {
+            float angularDamping = 0.5
             bool gravityEnabled = 0
             uniform token info:id = "RealityKit.RigidBody"
+            float linearDamping = 0.01
             token motionType = "Static"
 
             def RealityKitStruct "massFrame"
             {
+                float3 m_inertia = (0.1, 0.1, 0.1)
+                float m_mass = 0.01
+
                 def RealityKitStruct "m_pose"
                 {
                 }
@@ -59,9 +64,9 @@ def Xform "Root"
 
             def RealityKitStruct "material"
             {
-                double dynamicFriction = 0.5
-                double restitution = 0.2
-                double staticFriction = 0.5
+                double dynamicFriction = 0.3
+                double restitution = 0.3
+                double staticFriction = 0.6
             }
         }
     }

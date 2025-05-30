@@ -28,11 +28,10 @@ struct PlanetView: View {
     @State private var mars = Entity()
     @State private var skybox = Entity()
     @State private var robot = Entity()
-    @State private var basketball = ModelEntity()
+    @State private var cube = ModelEntity()
     @State private var showRobotMessage = false
     @State private var inputText = ""
     @State private var showButtons = false
-    @State private var backupContentEntity: RealityViewContent?
     
     let headAnchorAttachment = {
         let anchorEntity = AnchorEntity(.head)
@@ -41,6 +40,29 @@ struct PlanetView: View {
         anchorEntity.transform.rotation = simd_quatf(angle: radians, axis: [0, 1, 0])
         
         return anchorEntity
+    }()
+    
+    let sphere = {
+        // Generate Box Entity
+        let sphere = ModelEntity(
+            mesh: .generateSphere(radius: 0.2),
+            materials: [SimpleMaterial(color: .blue, roughness: 0.3, isMetallic: false)]
+        )
+        
+        sphere.generateCollisionShapes(recursive: true)
+        sphere.components.set(InputTargetComponent(allowedInputTypes: [.direct, .indirect]))
+        sphere.components.set(
+                PhysicsBodyComponent(
+                    massProperties: .init(mass: 5),
+                material: .generate(friction: 0.2, restitution: 0.3),
+                mode: .dynamic
+            )
+        )
+        sphere.components.set(HoverEffectComponent())
+        
+        sphere.name = "Box"
+        sphere.position = [0, 1.2, -2.0]
+        return sphere
     }()
     
     var robotMessage: some View {
@@ -87,9 +109,7 @@ struct PlanetView: View {
     var vectorFieldControls: some View {
         VectorFieldControlsView(
             fieldType: $viewModel.fieldType,
-            fieldWidth: $viewModel.fieldWidth,
-            fieldHeight: $viewModel.fieldHeight,
-            fieldDepth: $viewModel.fieldDepth,
+            fieldVolume: $viewModel.fieldVolume,
             fieldDensity: $viewModel.fieldDensity,
             isFieldActive: $viewModel.isFieldActive,
             radialDirection: $viewModel.radialDirection,
@@ -148,11 +168,6 @@ extension PlanetView {
         guard let skybox = ModelEntity.generateSkyBox(when: .onPlanet) else { fatalError("Failed loading in the skybox.") }
         self.skybox = skybox
         
-        // Load in Mars
-        guard let mars = scene.findEntity(named: "Mars") else { fatalError("Failed loading in Mars.") }
-        self.mars = mars
-        mars.generateCollisionShapes(recursive: true)
-        
         // Load in robot assistant and its animations
         // Load in robot scene
         guard let robotScene = try? await Entity(named: "RobotOnMars", in: realityKitContentBundle) else { fatalError("Failed loading in the scene.") }
@@ -177,11 +192,6 @@ extension PlanetView {
         )
         robotMessageAttachment.setTransformMatrix(newTransformMatrixRelativeToRobot, relativeTo: robot)
         
-        // Load in basketball
-        guard let basketball = viewModel.createBasketBall() else { return }
-        self.basketball = basketball
-        basketball.transform.translation = SIMD3<Float>(0, 4, -2)
-        
         // Load in vector field controls
         guard let vectorFieldControlsAttachment = attachments.entity(for: "vectorFieldControls") else { fatalError("Failed loading in attachments") }
         headAnchorAttachment.addChild(vectorFieldControlsAttachment)
@@ -191,53 +201,58 @@ extension PlanetView {
         }
         
         content.add(skybox)
-        content.add(mars)
+        content.add(scene)
+        content.add(sphere)
         content.add(robot)
         content.add(robotMessageAttachment)
-        content.add(basketball)
-        backupContentEntity = content
         
         // Load in vector Field
         vectorFieldSubscriber = vectorFieldPublisher.sink { _ in
             
-            if viewModel.isFieldActive {
-                // Create `FieldTraitComponent` object
-                let fieldTraitComponent = FieldTraitComponent(
-                    fieldTrait:
-                    {
-                        switch viewModel.fieldType {
-                        case .radial:
-                            FieldTrait.radial(direction: viewModel.radialDirection) { vectorPosition, time in
-                                viewModel.magnitude
-                            }
-                        case .spiral:
-                            FieldTrait.spiral(aboutAxis: viewModel.aboutAxis, rotation: viewModel.rotation) { vectorPosition, time in
-                                viewModel.magnitude
-                            }
+            // Create `FieldTraitComponent` object
+            let fieldTraitComponent = FieldTraitComponent(
+                fieldTrait:
+                {
+                    switch viewModel.fieldType {
+                    case .radial:
+                        FieldTrait.radial(direction: viewModel.radialDirection) { vectorPosition, time in
+                            viewModel.magnitude
                         }
-                    }()
-                )
-                
-                // Create `FieldAreaComponent` object
-                let fieldAreaComponent = FieldAreaComponent(
-                    width: viewModel.fieldWidth,
-                    height: viewModel.fieldHeight,
-                    depth: viewModel.fieldDepth
-                )
-                
-                // Spawn vector field
-                let field = Field(content: content, area: fieldAreaComponent, trait: fieldTraitComponent, relativeTo: nil)
+                    case .spiral:
+                        FieldTrait.spiral(aboutAxis: viewModel.aboutAxis, rotation: viewModel.rotation) { vectorPosition, time in
+                            viewModel.magnitude
+                        }
+                    }
+                }()
+            )
+            
+            // Create `FieldAreaComponent` object
+            let fieldAreaComponent = FieldAreaComponent(
+                width: viewModel.fieldVolume,
+                height: viewModel.fieldVolume,
+                depth: viewModel.fieldVolume
+            )
+            
+            // Spawn vector field
+            let field = Field(content: content, area: fieldAreaComponent, trait: fieldTraitComponent, relativeTo: nil)
+            field.eventUpdateSubscription?.cancel()
+            
+            if viewModel.isFieldActive {
                 Task {
+                    sphere.position = [0, 0.2, -1.0]
+                    
                     await field.addForceField(
                         vectorDensity: viewModel.fieldDensity,
                         duration: viewModel.duration,
-                        on: basketball
+                        on: sphere
                     )
                 }
             } else {
-                content.entities.removeAll()
-                if let backupContentEntity = backupContentEntity {
-                    content.entities = backupContentEntity.entities
+                Task {
+                    content.entities.removeAll()
+                    await setupContentAndAttachments(content: content, attachments: attachments)
+                    sphere.position = [0, 0.2, -1.0]
+                    vectorFieldControlsPublisher.send()
                 }
             }
         }

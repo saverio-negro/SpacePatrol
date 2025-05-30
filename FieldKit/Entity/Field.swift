@@ -27,7 +27,7 @@ public class Field {
         
         return SIMD3<Float>.zero
     }
-    private var eventUpdateSubscription: EventSubscription?
+    public var eventUpdateSubscription: EventSubscription?
     
     public init(content: RealityViewContent, area: FieldAreaComponent? = nil, trait: FieldTraitComponent? = nil, relativeTo referenceEntity: Entity? = nil) {
         self.content = content
@@ -141,7 +141,7 @@ public class Field {
         // your `ImmersiveSpace` scene.
         var timeElapsed: TimeInterval = .zero
         var timeBuffer: TimeInterval = .zero
-        let customDeltaTime: TimeInterval = 0.2
+        let customDeltaTime: TimeInterval = 0.3
         
         eventUpdateSubscription = content.subscribe(to: SceneEvents.Update.self) { event in
             
@@ -149,8 +149,11 @@ public class Field {
                 for vectorPosition in discreteVectorArray {
                     let force = self.force(at: vectorPosition, time: timeElapsed) * Float(customDeltaTime)
                     let materializedForce = self.materializeFieldVector(vector: force, at: vectorPosition)
+                    
+                    // Print force information onto the console
                     print("Materialized force (\(force.x), \(force.y), \(force.z)) at (\(vectorPosition.x), \(vectorPosition.y), \(vectorPosition.z))")
                     self.content.add(materializedForce)
+                    
                     Task {
                         await entity.addForce(force, at: vectorPosition, relativeTo: nil)
                     }

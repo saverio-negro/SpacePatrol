@@ -11,9 +11,7 @@ import FieldKit
 struct VectorFieldControlsView: View {
     
     @Binding var fieldType: FieldType
-    @Binding var fieldWidth: Float
-    @Binding var fieldHeight: Float
-    @Binding var fieldDepth: Float
+    @Binding var fieldVolume: Float
     @Binding var fieldDensity: VectorDensity
     @Binding var isFieldActive: Bool
     @Binding var duration: TimeInterval
@@ -36,13 +34,11 @@ struct VectorFieldControlsView: View {
     let axes: Array<RotationAxis> = [.x, .y, .z]
     let rotationDirections: Array<RotationDirection> = [.clockwise, .counterclockwise]
     let durations: [TimeInterval] = [5, 10, 15]
-    let magnitudeValues: [Float] = [2, 5, 10]
+    let magnitudeValues: [Float] = [1, 2, 3]
     
     init(
         fieldType: Binding<FieldType>,
-        fieldWidth: Binding<Float>,
-        fieldHeight: Binding<Float>,
-        fieldDepth: Binding<Float>,
+        fieldVolume: Binding<Float>,
         fieldDensity: Binding<VectorDensity>,
         isFieldActive: Binding<Bool>,
         radialDirection: Binding<RadialDirection>,
@@ -54,9 +50,7 @@ struct VectorFieldControlsView: View {
         buttonAction: @escaping () -> Void
     ) {
         self._fieldType = fieldType
-        self._fieldWidth = fieldWidth
-        self._fieldHeight = fieldHeight
-        self._fieldDepth = fieldDepth
+        self._fieldVolume = fieldVolume
         self._fieldDensity = fieldDensity
         self._isFieldActive = isFieldActive
         self._radialDirection = radialDirection
@@ -174,14 +168,9 @@ struct VectorFieldControlsView: View {
                     .font(.title)
                     .padding()
                 
-                Text("Width:")
-                TextField("Width", value: $fieldWidth, format: .number).font(.title)
-                
-                Text("Height:")
-                TextField("Height", value: $fieldHeight, format: .number).font(.title)
-                
-                Text("Depth:")
-                TextField("Depth", value: $fieldDepth, format: .number).font(.title)
+                Text("Cubic meters")
+                    .font(.title)
+                TextField("Volume", value: $fieldVolume, format: .number)
             }
             .padding()
             
@@ -225,13 +214,13 @@ struct VectorFieldControlsView: View {
                     .font(.largeTitle)
             }
             .toggleStyle(.button)
-            .padding()
+            .padding(30)
         }
         .onChange(of: isFieldActive) { _, _ in
             self.action()
         }
         .padding(100)
-        .frame(minWidth: 300, minHeight: 300)
+        .frame(minWidth: 600, minHeight: 800, maxHeight: .infinity)
         .glassBackgroundEffect()
     }
 }

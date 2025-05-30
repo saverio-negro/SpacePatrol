@@ -17,12 +17,10 @@ class ViewModel: ObservableObject {
     
     // Vector-Field-Control Related Properties
     @Published var fieldType: FieldType = .radial
-    @Published var fieldWidth: Float = 0
-    @Published var fieldHeight: Float = 0
-    @Published var fieldDepth: Float = 0
-    @Published var fieldDensity: VectorDensity = .medium
+    @Published var fieldVolume: Float = 6
+    @Published var fieldDensity: VectorDensity = .low
     @Published var isFieldActive: Bool = false
-    @Published var duration: TimeInterval = 5
+    @Published var duration: TimeInterval = 10
     @Published var magnitude: Float = 5
     
         // Radial-Field Related Properties
