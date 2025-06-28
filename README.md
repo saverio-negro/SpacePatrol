@@ -6,7 +6,7 @@
 
 **Space Patrol** is a fictional adventure set within a futuristic mission to Mars. It follows the journey of a patrol inspector guided by a small robotic assistant—serving as both a narrative companion and functional guide throughout the immersive experience. But beyond the story, **Space Patrol** is a deeply personal exploration of creative and technical experimentation on the Apple Vision Pro platform.
 
-Here’s why **Space Patrol** is useful:
+**Space Patrol** embeds:
 
 - **Interactive Narrative as a Learning Interface**  
   The core journey of traveling to Mars is more than a sci-fi tale—it’s designed as a dynamic learning experience. By embedding users in a story-driven mission and integrating real-time user interaction, it becomes an accessible gateway to learning concepts related to space, motion, and spatial reasoning.
