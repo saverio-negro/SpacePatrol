@@ -1,6 +1,7 @@
 # Space Patrol
 
-
+<img src="./Images/space_patrol_img_1.png" width="25%" height="25%"/>
+<img src="./Images/space_patrol_img_2.png" width="25%" height="25%"/>
 
 ## Why is **Space Patrol** Useful?
 
@@ -24,10 +25,14 @@
 
 ## Technologies Behind **Space Patrol**
 
+
 **Space Patrol** is built using a variety of advanced technologies and architectural patterns native to visionOS and iOS. While still in an early stage of development, its technical underpinnings lay the groundwork for scalable and performant immersive experiences. Here’s how:
 
 - **RealityKit for 3D Scene Construction and Spatial Logic**  
   I used **RealityKit** to handle spatial content, such as importing and manipulating 3D models. It helped with complex operations like matrix transforms and compositions—particularly for animating planetary systems or placing SwiftUI elements within immersive scenes. It provided the necessary control over coordinate space and transformation logic, making it ideal for spatial simulations.
+
+  <img src="./Images/space_patrol_img_3.png" width="25%" height="25%"/>
+  <img src="./Images/space_patrol_img_5.png" width="25%" height="25%"/>
 
 - **Reality Composer Pro for Shader Graphs and Visual Effects**  
   The use of **Reality Composer Pro** allowed me to build both **geometry** and **surface shaders** through node-based visual programming. For example:
@@ -39,11 +44,16 @@
 - **Combine for Asynchronous Event Handling and UI Bridging**  
   I used **Combine** to manage **asynchronous data streams**, allowing me to synchronize changes between SwiftUI and UIKit components without falling back to traditional delegate patterns. Combine helped structure the app in a more reactive way, enabling the robot assistant and other parts of the experience to respond to user inputs and system events smoothly and declaratively.
 
+<img src="./Images/space_patrol_img_4.png" width="25%" height="25%"/>
+
 - **Entity-Component-System Pattern via FieldKit (Work in Progress)**  
   The underlying framework I’m developing, **FieldKit**, is being architected with the **Entity-Component-System (ECS)** design pattern—commonly used in high-performance game engines. This pattern allows for clean, modular, and reusable logic when managing simulations like vector field dynamics. While the bridging layer between FieldKit and the UI is still under development, the structure is already capable of expressing complex mathematical systems in a composable and flexible way.
 
 - **Prototyping the Future of Math Visualization in visionOS**  
   Through Space Patrol, I’ve begun testing ideas for how **immersive devices can serve as educational instruments for math and physics**—particularly in visualizing vector fields, space-time interactions, and geometric relationships. The project is a proving ground for both UX patterns in spatial computing and deeper rendering logic that will eventually be handled by FieldKit.
+
+<img src="./Images/space_patrol_img_6.png" width="25%" height="25%"/>
+<img src="./Images/space_patrol_img_7.png" width="25%" height="25%"/>
 
 ---
 
