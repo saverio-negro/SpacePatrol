@@ -1,7 +1,6 @@
 # Space Patrol
 
-<img src="./Images/space_patrol_img_1.png" width="25%" height="25%"/>
-<img src="./Images/space_patrol_img_2.png" width="25%" height="25%"/>
+<img src="./Images/space_patrol_img_1.png" width="25%" height="25%"/><img src="./Images/space_patrol_img_2.png" width="25%" height="25%"/>
 
 ## Why is **Space Patrol** Useful?
 
